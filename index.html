@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consumir Microservicio</title>
+</head>
+<body>
+    <h1>Microservicio Consumidor</h1>
+    <div id="resultado"></div>
+
+    <script>
+        fetch('https://solid-space-garbanzo-p65jw6pg4p426j69-8082.app.github.dev/colors')
+            .then(response => response.json())
+            .then(data => {
+                // Aquí puedes manipular los datos JSON recibidos
+                const colorsArray = data.arrayColores;
+                const resultadoDiv = document.getElementById('resultado');
+
+                // Crear una lista para mostrar los colores
+                const listaColores = document.createElement('ul');
+
+                // Recorrer el array de colores y agregarlos a la lista
+                colorsArray.forEach(color => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Nombre: ${color.nombreColor}, Valor: ${color.valorHexadec}`;
+                    listaColores.appendChild(listItem);
+                });
+
+                // Agregar la lista al resultadoDiv
+                resultadoDiv.appendChild(listaColores);
+            })
+            .catch(error => {
+                console.error('Error al consumir el microservicio:', error);
+            });
+    </script>
+</body>
+</html>
