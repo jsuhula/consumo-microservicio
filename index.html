@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Consumir Microservicio</title>
+    <title>Consumir Microservicio y Mostrar en Tabla</title>
+    <!-- Enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Microservicio Consumidor</h1>
-    <div id="resultado"></div>
+    <div class="container">
+        <h1>Microservicio Consumidor</h1>
+        <div id="tablaColores"></div>
+    </div>
 
     <script>
         fetch('https://solid-space-garbanzo-p65jw6pg4p426j69-8082.app.github.dev/colors')
             .then(response => response.json())
             .then(data => {
-                // Aquí puedes manipular los datos JSON recibidos
                 const colorsArray = data.arrayColores;
-                const resultadoDiv = document.getElementById('resultado');
+                const tablaColoresDiv = document.getElementById('tablaColores');
 
-                // Crear una lista para mostrar los colores
-                const listaColores = document.createElement('ul');
+                const table = document.createElement('table');
+                table.className = 'table';
 
-                // Recorrer el array de colores y agregarlos a la lista
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                const thNombre = document.createElement('th');
+                thNombre.textContent = 'Nombre de Color';
+                const thHexadec = document.createElement('th');
+                thHexadec.textContent = 'Valor Hexadecimal';
+                headerRow.appendChild(thNombre);
+                headerRow.appendChild(thHexadec);
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                const tbody = document.createElement('tbody');
                 colorsArray.forEach(color => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `Nombre: ${color.nombreColor}, Valor: ${color.valorHexadec}`;
-                    listaColores.appendChild(listItem);
+                    const colorRow = document.createElement('tr');
+                    const tdNombre = document.createElement('td');
+                    tdNombre.textContent = color.nombreColor;
+                    const tdHexadec = document.createElement('td');
+                    tdHexadec.textContent = color.valorHexadec;
+                    colorRow.appendChild(tdNombre);
+                    colorRow.appendChild(tdHexadec);
+                    tbody.appendChild(colorRow);
                 });
+                table.appendChild(tbody);
 
-                // Agregar la lista al resultadoDiv
-                resultadoDiv.appendChild(listaColores);
+                tablaColoresDiv.appendChild(table);
             })
             .catch(error => {
                 console.error('Error al consumir el microservicio:', error);
